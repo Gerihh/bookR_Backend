@@ -80,4 +80,64 @@ class NodeController extends Controller
             return response()->json(['message' => 'Node deleted successfully'], 200);
         }
     }
+
+    public function getNodesForElement($elementId)
+    {
+        $nodes = Node::where('elementId', $elementId)->get();
+
+        if ($nodes->isEmpty()) {
+            return response()->json(['message' => 'There are no nodes for this element'], 404);
+        } else {
+            return response()->json($nodes, 201);
+        }
+    }
+
+    public function createChildNode(Request $request, $parentNodeId)
+    {
+        $parentNode = Node::find($parentNodeId);
+
+        if ($parentNode == null) {
+            return response()->json(['message' => 'Parent node not found with this id'], 404);
+        } else {
+            $childNode = new Node();
+            $childNode->parentNodeId = $parentNode->id;
+            $childNode->elementId = $parentNode->elementId;
+            $childNode->fill($request->all());
+            $childNode->save();
+
+            $elementController = new ElementController();
+            $elementController->updateNodeCount($childNode->elementId);
+
+            return response()->json($childNode, 201);
+        }
+    }
+
+    public function getChildNodes($parentNodeId)
+    {
+        $childNodes = Node::where('parentNodeId', $parentNodeId)->get();
+
+        if ($childNodes->isEmpty()) {
+            return response()->json(['message' => 'There are no child nodes for this node'], 404);
+        } else {
+            return response()->json($childNodes, 201);
+        }
+    }
+
+    public function getParentNode($childNodeId)
+{
+    $parentNode = Node::find($childNodeId)->parentNodeId;
+
+    if ($parentNode === null) {
+        return response()->json(['message' => 'Parent node not found for this child node'], 404);
+    }
+
+    $nodeController = new NodeController();
+    $parentNodeData = $nodeController->show($parentNode);
+
+    if (!$parentNodeData) {
+        return response()->json(['message' => 'Error retrieving parent node data'], 500);
+    } else {
+        return response()->json($parentNodeData->original, 200);
+    }
+}
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ElementController;
 use App\Http\Controllers\NodeController;
+use App\Models\Node;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +22,7 @@ Route::apiResource('elements', ElementController::class);
 Route::apiResource('nodes', NodeController::class);
 
 Route::get('/elements/book/{bookId}', [ElementController::class, 'getElementsForBook']);
+Route::get('/nodes/element/{elementId}', [NodeController::class, 'getNodesForElement']);
+Route::post('/node/parent-node/{parentNodeId}', [NodeController::class, 'createChildNode']);
+Route::get('/child-nodes/{parentNodeId}', [NodeController::class, 'getChildNodes']);
+Route::get('/parent-node/{childNodeId}', [NodeController::class, 'getParentNode']);
