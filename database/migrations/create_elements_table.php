@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('nodeCount')->default(0);
-            $table->foreignId('bookId')->references('id')->on('books');
+            $table->foreignId('bookId')->references('id')->on('books')->onDelete('cascade');
         });
     }
 

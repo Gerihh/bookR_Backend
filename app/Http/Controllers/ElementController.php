@@ -26,6 +26,9 @@ class ElementController extends Controller
         $element = Element::create($request->all());
 
         if ($element) {
+            $bookController = new BookController();
+
+            $bookController->updateElementCount($element->bookId);
             return response()->json($element, 201);
         } else {
             return response()->json(['message' => 'Failed to create element'], 400);
@@ -39,12 +42,10 @@ class ElementController extends Controller
     {
         $element = Element::find($id);
 
-        if ($element == null)
-        {
+        if ($element == null) {
             return response()->json(['message' => 'Element not found with this id'], 404);
-        }
-        else
-        {
+        } else {
+
             return response()->json($element, 201);
         }
     }
@@ -56,12 +57,9 @@ class ElementController extends Controller
     {
         $element = Element::find($id);
 
-        if ($element == null)
-        {
+        if ($element == null) {
             return response()->json(['message' => 'Element not found with this id'], 404);
-        }
-        else
-        {
+        } else {
             $element->update($request->all());
             return response()->json($element, 201);
         }
@@ -74,13 +72,15 @@ class ElementController extends Controller
     {
         $element = Element::find($id);
 
-        if ($element == null)
-        {
+        if ($element == null) {
             return response()->json(['message' => 'Element not found with this id'], 404);
-        }
-        else
-        {
+        } else {
             $element->delete();
+
+            $bookController = new BookController();
+
+            $bookController->updateElementCount($element->bookId);
+
             return response()->json(['message' => 'Element deleted successfully'], 200);
         }
     }
@@ -89,31 +89,28 @@ class ElementController extends Controller
     {
         $elements = Element::where('bookId', $bookId)->get();
 
-        if ($elements->isEmpty())
-        {
+        if ($elements->isEmpty()) {
             return response()->json(['message' => 'There are no elements for this book'], 404);
-        }
-        else
-        {
+        } else {
             return response()->json($elements, 201);
         }
     }
 
     public function getElementsForBookWithName($title)
     {
-       $book = Book::where('title', $title)->first();
+        $book = Book::where('title', $title)->first();
 
-       if ($book) {
-        $elements = Element::where('bookId', $book->id)->get();
+        if ($book) {
+            $elements = Element::where('bookId', $book->id)->get();
 
-           if ($elements->isEmpty()) {
-               return response()->json(['message' => 'There are no elements for this book'], 404);
-           } else {
-               return response()->json($elements, 201);
-           }
-       } else {
-           return response()->json(['message' => 'Book not found with this title'], 404);
-       }
+            if ($elements->isEmpty()) {
+                return response()->json(['message' => 'There are no elements for this book'], 404);
+            } else {
+                return response()->json($elements, 201);
+            }
+        } else {
+            return response()->json(['message' => 'Book not found with this title'], 404);
+        }
     }
 
     public function updateNodeCount($elementId)

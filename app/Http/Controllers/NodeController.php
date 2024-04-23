@@ -124,20 +124,20 @@ class NodeController extends Controller
     }
 
     public function getParentNode($childNodeId)
-{
-    $parentNode = Node::find($childNodeId)->parentNodeId;
+    {
+        $parentNode = Node::find($childNodeId)->parentNodeId;
 
-    if ($parentNode === null) {
-        return response()->json(['message' => 'Parent node not found for this child node'], 404);
+        if ($parentNode === null) {
+            return response()->json(['message' => 'Parent node not found for this child node'], 404);
+        }
+
+        $nodeController = new NodeController();
+        $parentNodeData = $nodeController->show($parentNode);
+
+        if (!$parentNodeData) {
+            return response()->json(['message' => 'Error retrieving parent node data'], 500);
+        } else {
+            return response()->json($parentNodeData->original, 200);
+        }
     }
-
-    $nodeController = new NodeController();
-    $parentNodeData = $nodeController->show($parentNode);
-
-    if (!$parentNodeData) {
-        return response()->json(['message' => 'Error retrieving parent node data'], 500);
-    } else {
-        return response()->json($parentNodeData->original, 200);
-    }
-}
 }

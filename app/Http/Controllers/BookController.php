@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Element;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -77,5 +78,13 @@ class BookController extends Controller
         } else {
             return null;
         }
+    }
+
+    public function updateElementCount($bookId)
+    {
+        $elements = Element::where('bookId', $bookId)->get();
+        $elementCount = $elements->count();
+
+        Book::where('id', $bookId)->update(['elementCount' => $elementCount]);
     }
 }
