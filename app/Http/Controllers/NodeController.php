@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Element;
 use App\Models\Node;
 use Illuminate\Http\Request;
 
@@ -91,6 +92,24 @@ class NodeController extends Controller
             return response()->json($nodes, 201);
         }
     }
+
+    public function getNodesForElementWithName($name)
+    {
+        $element = Element::where('name', $name)->first();
+
+        if ($element) {
+            $nodes = Node::where('elementId', $element->id)->get();
+
+            if ($nodes->isEmpty()) {
+                return response()->json(['message' => 'There are no nodes for this element'], 404);
+            } else {
+                return response()->json($nodes, 201);
+            }
+        } else {
+            return response()->json(['message' => 'Element not found with the given name'], 404);
+        }
+    }
+
 
     public function createChildNode(Request $request, $parentNodeId)
     {

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('elementId')->references('id')->on('elements')->onDelete('cascade');
-            $table->foreignId('parentNodeId')->references('id')->on('nodes')->onDelete('cascade')->nullable();
+            $table->foreignId('parentNodeId')->nullable()->references('id')->on('nodes')->onDelete('cascade');
         });
     }
 

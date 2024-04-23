@@ -27,6 +27,7 @@ Route::get('/elements/book/{bookId}', [ElementController::class, 'getElementsFor
 Route::get('/elements/book/name/{title}', [ElementController::class, 'getElementsForBookWithName']);
 
 Route::get('/nodes/element/{elementId}', [NodeController::class, 'getNodesForElement']);
+Route::get('/nodes/element/name/{name}', [NodeController::class, 'getNodesForElementWithName']);
 Route::post('/node/parent-node/{parentNodeId}', [NodeController::class, 'createChildNode']);
 Route::get('/child-nodes/{parentNodeId}', [NodeController::class, 'getChildNodes']);
 Route::get('/parent-node/{childNodeId}', [NodeController::class, 'getParentNode']);
