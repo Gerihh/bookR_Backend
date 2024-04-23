@@ -68,4 +68,14 @@ class BookController extends Controller
             return response()->json(['message' => 'Book deleted successfully'], 200);
         }
     }
+
+    public function getBookByTitle($title)
+    {
+        $book = Book::where('title', $title)->first();
+        if ($book) {
+            return $book;
+        } else {
+            return null;
+        }
+    }
 }

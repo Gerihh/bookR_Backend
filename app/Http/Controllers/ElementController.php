@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\Element;
 use App\Models\Node;
 use Illuminate\Http\Request;
@@ -96,6 +97,23 @@ class ElementController extends Controller
         {
             return response()->json($elements, 201);
         }
+    }
+
+    public function getElementsForBookWithName($title)
+    {
+       $book = Book::where('title', $title)->first();
+
+       if ($book) {
+        $elements = Element::where('bookId', $book->id)->get();
+
+           if ($elements->isEmpty()) {
+               return response()->json(['message' => 'There are no elements for this book'], 404);
+           } else {
+               return response()->json($elements, 201);
+           }
+       } else {
+           return response()->json(['message' => 'Book not found with this title'], 404);
+       }
     }
 
     public function updateNodeCount($elementId)

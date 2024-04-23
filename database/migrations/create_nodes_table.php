@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('elementId')->references('id')->on('elements');
-            $table->foreignId('parentNodeId')->nullable()->references('id')->on('nodes');
+            $table->foreignId('parentNodeId')->references('id')->on('nodes')->nullable();
         });
     }
 

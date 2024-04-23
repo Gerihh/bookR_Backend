@@ -21,7 +21,11 @@ Route::apiResource('books', BookController::class);
 Route::apiResource('elements', ElementController::class);
 Route::apiResource('nodes', NodeController::class);
 
+Route::get('/book/name/{title}', [BookController::class, 'getBookByTitle']);
+
 Route::get('/elements/book/{bookId}', [ElementController::class, 'getElementsForBook']);
+Route::get('/elements/book/name/{title}', [ElementController::class, 'getElementsForBookWithName']);
+
 Route::get('/nodes/element/{elementId}', [NodeController::class, 'getNodesForElement']);
 Route::post('/node/parent-node/{parentNodeId}', [NodeController::class, 'createChildNode']);
 Route::get('/child-nodes/{parentNodeId}', [NodeController::class, 'getChildNodes']);
