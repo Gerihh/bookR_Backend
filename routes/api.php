@@ -25,6 +25,7 @@ Route::get('/book/name/{title}', [BookController::class, 'getBookByTitle']);
 
 Route::get('/elements/book/{bookId}', [ElementController::class, 'getElementsForBook']);
 Route::get('/elements/book/name/{title}', [ElementController::class, 'getElementsForBookWithName']);
+Route::get('/element/name/{name}', [ElementController::class, 'getElementByName']);
 
 Route::get('/nodes/element/{elementId}', [NodeController::class, 'getNodesForElement']);
 Route::get('/nodes/element/name/{name}', [NodeController::class, 'getNodesForElementWithName']);

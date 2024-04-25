@@ -120,4 +120,15 @@ class ElementController extends Controller
 
         Element::where('id', $elementId)->update(['nodeCount' => $nodeCount]);
     }
+
+    public function getElementByName($name)
+    {
+        $element = Element::where('name', $name)->first();
+
+        if ($element) {
+            return response()->json($element, 201);
+        } else {
+            return response()->json(['message' => 'Element not found with this name'], 404);
+        }
+    }
 }
